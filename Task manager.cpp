@@ -98,4 +98,9 @@ struct to_do {
 		}
 		return thisPriorityIndex < otherPriorityIndex;
 	}
+	friend std::ostream& operator<<(std::ostream& os, const to_do& td) {
+		os << "Task: " << td.task << setw(5) << "Status: " << td.status <<
+			setw(5) << "Due date: " << td.due << setw(5) << "Priority: " << td.priority;
+			return os;
+	}
  };
