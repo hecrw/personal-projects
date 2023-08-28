@@ -77,11 +77,21 @@ string get_time() {
 }
 struct to_do {
 	string created, due, task, priority, status, comment;
-	to_do(string t, string d = "", string p = "", string c = "", string s = "Not started") :
-		due(get_time()), task(t), priority(p), status(s), comment(c), created(get_time()){
+	to_do(string t, string d = "", string p = "", string c = "", int s = 0) :
+		due(get_time()), task(t), priority(p), status(setStatus(s)), comment(c), created(get_time()){
 		for (int i = 0;i < d.size();i++) {
 			due[i] = d[i];
 		}
+	}
+	string setStatus(int i) {
+		vector<string>statuses{ "not started", "in progress", "done" };
+		if (i >= statuses.size()) return statuses[0];
+		return statuses[i];
+	}
+	void updateTask(const std::string& newTask, const std::string& newDueDate, const std::string& newPriority) {
+		task = newTask;
+		due = newDueDate;
+		priority = newPriority;
 	}
 	bool operator<(const to_do& other) const {
 		std::string priorityOrder[] = { "Low", "Medium" ,"High" };
