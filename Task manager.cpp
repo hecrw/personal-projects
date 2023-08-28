@@ -74,3 +74,28 @@ string get_time() {
 	strftime(timeString, sizeof(timeString), "%Y-%m-%d", std::localtime(&currentTime));
 	return timeString;
 }
+struct to_do {
+	string created, due, task, priority, status, comment;
+	to_do(string t, string d = "", string p = "", string c = "", string s = "Not started") :
+		due(get_time()), task(t), priority(p), status(s), comment(c), created(get_time()){
+		for (int i = 0;i < d.size();i++) {
+			due[i] = d[i];
+		}
+	}
+	bool operator<(const to_do& other) const {
+		std::string priorityOrder[] = { "High", "Medium", "Low" };
+
+		int thisPriorityIndex = -1;
+		int otherPriorityIndex = -1;
+
+		for (int i = 0; i < 3; ++i) {
+			if (priority == priorityOrder[i]) {
+				thisPriorityIndex = i;
+			}
+			if (other.priority == priorityOrder[i]) {
+				otherPriorityIndex = i;
+			}
+		}
+		return thisPriorityIndex < otherPriorityIndex;
+	}
+ };
