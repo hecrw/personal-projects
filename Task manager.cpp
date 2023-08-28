@@ -99,6 +99,22 @@ struct to_do {
 		}
 		return thisPriorityIndex < otherPriorityIndex;
 	}
+	bool operator>(const to_do& other) const {
+		std::string priorityOrder[] = { "High", "Medium", "Low" };
+
+		int thisPriorityIndex = -1;
+		int otherPriorityIndex = -1;
+
+		for (int i = 0; i < 3; ++i) {
+			if (priority == priorityOrder[i]) {
+				thisPriorityIndex = i;
+			}
+			if (other.priority == priorityOrder[i]) {
+				otherPriorityIndex = i;
+			}
+		}
+		return thisPriorityIndex > otherPriorityIndex;
+	}
 	friend std::ostream& operator<<(std::ostream& os, const to_do& td) {
 		os << "Task: " << td.task << setw(5) << "Status: " << td.status <<
 			setw(5) << "Due date: " << td.due << setw(5) << "Priority: " << td.priority;
