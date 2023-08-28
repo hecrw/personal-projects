@@ -84,7 +84,7 @@ struct to_do {
 		}
 	}
 	bool operator<(const to_do& other) const {
-		std::string priorityOrder[] = { "High", "Medium", "Low" };
+		std::string priorityOrder[] = { "Low", "Medium" ,"High" };
 
 		int thisPriorityIndex = -1;
 		int otherPriorityIndex = -1;
@@ -100,7 +100,7 @@ struct to_do {
 		return thisPriorityIndex < otherPriorityIndex;
 	}
 	bool operator>(const to_do& other) const {
-		std::string priorityOrder[] = { "High", "Medium", "Low" };
+		std::string priorityOrder[] = { "Low", "Medium" ,"High" };
 
 		int thisPriorityIndex = -1;
 		int otherPriorityIndex = -1;
