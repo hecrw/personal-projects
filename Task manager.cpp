@@ -68,3 +68,9 @@ public:
 		return temp;
 	}
 };
+string get_time() {
+	time_t currentTime = std::time(nullptr);
+	char timeString[100];
+	strftime(timeString, sizeof(timeString), "%Y-%m-%d", std::localtime(&currentTime));
+	return timeString;
+}
