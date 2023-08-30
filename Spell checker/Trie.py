@@ -1,6 +1,7 @@
 import nltk
+import heapq
 from nltk.corpus import words
-nltk.download("words")
+nltk.download("words") #this should be run once but whatever
 class TrieNode:
     def __init__(self):
         self.children = {} #children of a certain node(letter) is a dictionary of letters which when traversing creates a word at the end
