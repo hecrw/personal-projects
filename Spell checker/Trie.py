@@ -1,3 +1,6 @@
+import nltk
+from nltk.corpus import words
+nltk.download("words")
 class TrieNode:
     def __init__(self):
         self.children = {} #children of a certain node(letter) is a dictionary of letters which when traversing creates a word at the end
@@ -23,4 +26,9 @@ class Trie:
                 return False
             node = node.children[c]
         return node.is_word
-                        
+
+english_words = words.words()
+dictionary = Trie()
+for word in english_words:
+    dictionary.insert(word)
+    
