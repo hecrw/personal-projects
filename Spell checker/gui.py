@@ -31,8 +31,10 @@ class spellingchecker:
         self.window.mainloop()
         
     def check(self, event):
-        content = self.text.get("1.0", "end-1c")
+        content = self.text.get("1.0", tk.END)
         curr = content.count(" ")
+        for i in self.lst:
+            i.pack_forget()
         if curr != self.spaces:
             self.spaces = curr
             
@@ -47,17 +49,18 @@ class spellingchecker:
                 tag_name = f"misspelled_{pos}"
                 self.text.tag_add(tag_name, f"1.{pos}", f"1.{pos + len(word)}")
                 self.text.tag_config(tag_name, underline=True, foreground="red")
-                self.text.tag_bind(tag_name, "<Button-1>", lambda event, w = word : self.show_suggestions(event, w))
+                self.text.tag_bind(tag_name, "<Button-3>", lambda event, w = word : self.show_suggestions(event, w))
         
     def show_suggestions(self, event, word):
-        suggestions = dictionary.suggestions(word)
-        for i in self.lst:
-            i.pack_forget()
-        if suggestions:
-            for t in suggestions:
-                button = ttk.Button(self.buttons, text= t,command= lambda w=word, s = t : self.replace_word(w, s))
-                self.lst.append(button)
-                button.pack()
+            suggestions = dictionary.suggestions(word)
+            if suggestions:
+                for t in suggestions:
+                    button = ttk.Button(self.buttons, text= t,command= lambda w=word, s = t : self.replace_word(w, s))
+                    self.lst.append(button)
+                    button.pack()
+                add = ttk.Button(self.buttons, text = "+ Add to Dictionary", command = lambda w= word : dictionary.insert(w))
+                add.pack()
+                self.lst.append(add)
 
     def replace_word(self, misspelled_word, replacement):
         content = self.text.get("1.0", tk.END)
