@@ -9,6 +9,7 @@ class spellingchecker:
     
     def __init__(self):
         self.spaces = 0
+        self.lst = []
         #window
         self.window = ttk.Window(themename='darkly')
         self.window.geometry("1000x700")
@@ -48,24 +49,23 @@ class spellingchecker:
                 self.text.tag_config(tag_name, underline=True, foreground="red")
                 self.text.tag_bind(tag_name, "<Button-1>", lambda event, w = word : self.show_suggestions(event, w))
         
-    def show_suggestions(self, event, misspelled_word):
-        suggestions = dictionary.suggestions(misspelled_word)
+    def show_suggestions(self, event, word):
+        suggestions = dictionary.suggestions(word)
+        for i in self.lst:
+            i.pack_forget()
         if suggestions:
-            suggestions_text = ", ".join(suggestions)
-            suggestion_popup = tk.Toplevel(self.window)
-            suggestion_popup.title("Suggestions")
-            suggestion_label = tk.Label(suggestion_popup, text="Choose a suggestion:")
-            suggestion_label.pack()
-            for suggestion in suggestions:
-                suggestion_button = tk.Button(suggestion_popup, text=suggestion, command=lambda s=suggestion: self.replace_word(misspelled_word, s))
-                suggestion_button.pack()
+            for t in suggestions:
+                button = ttk.Button(self.buttons, text= t,command= lambda w=word, s = t : self.replace_word(w, s))
+                self.lst.append(button)
+                button.pack()
 
     def replace_word(self, misspelled_word, replacement):
         content = self.text.get("1.0", tk.END)
         new_content = content.replace(misspelled_word, replacement)
         self.text.delete("1.0", tk.END)
         self.text.insert("1.0", new_content)
+        for i in self.lst:
+            i.pack_forget()
         self.check(None)
-
                     
 spellingchecker()
