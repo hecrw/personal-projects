@@ -38,18 +38,18 @@ class spellingchecker:
         if curr != self.spaces:
             self.spaces = curr
             
-        for tag in self.text.tag_names():
-            self.text.tag_delete(tag)
-            
-        for word in content.split(" "):
-            temp = re.sub(r'[^\w\s]', '', word)
-            
-            if not dictionary.search(temp):
-                pos = content.index(word)
-                tag_name = f"misspelled_{pos}"
-                self.text.tag_add(tag_name, f"1.{pos}", f"1.{pos + len(word)}")
-                self.text.tag_config(tag_name, underline=True, foreground="red")
-                self.text.tag_bind(tag_name, "<Button-3>", lambda event, w = word : self.show_suggestions(event, w))
+            for tag in self.text.tag_names():
+                self.text.tag_delete(tag)
+                
+            for word in content.split(" "):
+                temp = re.sub(r'[^\w\s]', '', word)
+                
+                if not dictionary.search(temp):
+                    pos = content.index(word)
+                    tag_name = f"misspelled_{pos}"
+                    self.text.tag_add(tag_name, f"1.{pos}", f"1.{pos + len(word)}")
+                    self.text.tag_config(tag_name, underline=True, foreground="red")
+                    self.text.tag_bind(tag_name, "<Button-3>", lambda event, w = word : self.show_suggestions(event, w))
         
     def show_suggestions(self, event, word):
             suggestions = dictionary.suggestions(word)
