@@ -9,10 +9,11 @@ class type_tester:
     def __init__(self):
         #assignments
         self.time = 15
+        self.idx = 0
         with open('words.txt', 'r') as file:
             self.common_words = file.read().splitlines()
         self.common_words = random.sample(self.common_words, 400)
-        self.portion = self.common_words[0: 10] 
+        self.portion = self.common_words[self.idx: self.idx + 10] 
         self.portion = " ".join(self.portion)
         
         #widgets
@@ -41,11 +42,7 @@ class type_tester:
     def check(self, event):
         content = self.text.get("1.0", tk.END).split()
         curr = content.count(" ")
-        size = len(self.portion.split())
-        if size <= len(content):
-            self.portion = self.common_words[size:size+10]
-            self.portion = " ".join(self.portion)
-            self.label.config(text=self.portion)
+        
         
         
         
