@@ -8,8 +8,7 @@ class type_tester:
     
     def __init__(self):
         #assignments
-        self.time = 15
-        self.idx = 0
+        self.time, self.idx, self.spaces = 15, 0, 0
         with open('words.txt', 'r') as file:
             self.common_words = file.read().splitlines()
         self.common_words = random.sample(self.common_words, 400)
@@ -40,12 +39,30 @@ class type_tester:
         
         
     def check(self, event):
-        content = self.text.get("1.0", tk.END).split()
+        content = self.text.get("1.0", tk.END)
         curr = content.count(" ")
-        
-        
-        
-        
+        word_count = len(content.split())
+        size = len(self.portion.split())
+        if curr != self.spaces:
+            self.spaces = curr
+            
+            for tag in self.text.tag_names():
+                self.text.tag_delete(tag)
+                
+            for i in range(len(content.split())):
+                if content.split()[i] != self.portion.split()[i] and i < len(self.portion.split()):
+                    pos = content.index(content.split()[i])
+                    tag_name = f"misspelled_{pos}"
+                    self.text.tag_add(tag_name, f"1.{pos}", f"1.{pos + len(content.split()[i])}")
+                    self.text.tag_config(tag_name, underline=True, foreground="red")
+                    
+            
+        if word_count == 10 and event.keysym == 'space':
+            self.idx += 10
+            self.portion = " ".join(self.common_words[self.idx:self.idx+10])
+            self.label.config(text=self.portion)
+            self.text.delete("1.0", tk.END)
+
     
     def set_time(self, idx):
         lst = [15, 30, 60]
