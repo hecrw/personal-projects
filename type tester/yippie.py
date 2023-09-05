@@ -71,14 +71,10 @@ class type_tester:
                     self.text.tag_add(tag_name, f"1.{pos}", f"1.{pos + len(content.split()[i])}")
                     self.text.tag_config(tag_name, underline=True, foreground="red")
                 elif content.split()[i] == self.portion.split()[i] and i < len(self.portion.split()):
-                    self.wpm.append(content.split()[i])
-                self.raw_wpm.append(content.split()[i])
-            
-        if word_count == 10 and event.keysym == 'space':
-            self.idx += 10
-            self.portion = " ".join(self.common_words[self.idx:self.idx+10])
-            self.label.config(text=self.portion)
-            self.text.delete("1.0", tk.END)
+                    if content.split()[i] not in self.wpm:
+                        self.wpm.append(content.split()[i])
+                if content.split()[i] not in self.raw_wpm:
+                    self.raw_wpm.append(content.split()[i])
             
 
     
@@ -100,14 +96,14 @@ class type_tester:
             self.time -= 1
             self.timer.after(1000, self.update_countdown)
         else:
-            raw_word_count = len(self.raw_wpm)
-            correct_word_count = len(self.wpm)
+            raw_word_count = len("".join(self.raw_wpm))
+            correct_word_count = len("".join(self.wpm))
             accuracy = (correct_word_count / raw_word_count) * 100 if raw_word_count > 0 else 0
-            words_per_minute = ((correct_word_count * 60) / (self.times[self.num] * 5))
+            words_per_minute = ((correct_word_count / 5) / (self.times[self.num] / 60))
             
             result_text = f"Time's up!\n\nWords per minute: {words_per_minute:.2f}\nAccuracy: {accuracy:.2f}%"
             self.label.config(text=result_text)
-            self.text.config(state=tk.DISABLED)
+            self.text.config(state=tk.DISABLED
                 
     
     def reset(self):
